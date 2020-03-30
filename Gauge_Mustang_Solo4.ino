@@ -143,8 +143,8 @@ void draw()
 void gaugePSI() {
   u8g.setFont(u8g_font_courB24);
     
-    u8g.drawStr( 0, 40, psi);
-    u8g.drawStr( 50, 40, water);
+    u8g.drawStr( 0, 48, psi);
+    u8g.drawStr( 50, 48, water);
     //u8g.drawBitmapP( 0, 0, 16, 64, pontiac);
     // u8g.setColorIndex(1);
     //u8g.drawStr( 0, 40, "Oil");
