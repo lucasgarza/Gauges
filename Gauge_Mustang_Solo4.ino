@@ -24,13 +24,14 @@ int angle=0;
 char* label[] = {"LOAD","COOLANT","INTAKE", "PSI"};    // some custom gauge labels
 int labelXpos[] = {53, 45, 49, 0};                     // predefined x-position of a gauge label
 #define potmeterPin A1                                  // simulate analogue value with potentiometer
-int p, w, m,a=10;
+int p, m,a=10;
 u8g_uint_t xx=0;
 int frame = 0;
 char psi [2];
 char water[4];
 int psi1 =0;
 char volts [6];
+float w;
 int value = 0;
 float vout = 0.0;
 float vin = 0.0;
@@ -43,9 +44,17 @@ int MeasurementsToAverage = 16;
 
 //int ThermistorPin = 0;
 int Vo;
-float R1a = 10000;
+float R1a = 10000; // resistance of R1a (10K)
 float logR2, R2a, T;
-float c1 = 3.481515861e-03, c2 = -2.206377112e-04, c3 = 35.05773575e-07;
+//float c1 = 3.481515861e-03, c2 = -2.206377112e-04, c3 = 35.05773575e-07;
+//float c1 = 1.009249522e-03, c2 = 2.378405444e-04, c3 = 2.019202697e-07;
+float c1 = 2.571202905e-03, c2 = -0.4402423056e-04, c3 = 9.838653961e-07; // SING F LTD Thermostat https://www.thinksrs.com/downloads/programs/Therm%20Calc/NTCCalibrator/NTCcalculator.htm
+
+
+
+float buffer=0;
+float VoutA= 0;
+
 
 
 const unsigned char pontiac[] PROGMEM = {0xff,0xff,0xff,0xff,0xff,0xff,0xf8,0x00,0x00,0x1f,0xff,0xff,0xff,0xff,0xff,0xff
@@ -207,13 +216,27 @@ void setup(void) {
 
 void loop(void) {
 
-int sensorVal=analogRead(A1);
-//Serial.print("Sensor Value: ");
-//Serial.print(sensorVal);
-Vo=analogRead(A3);
+  int sensorVal=analogRead(A1);
+  //Serial.print("Sensor Value: ");
+  //Serial.print(sensorVal);
+  Vo=analogRead(A3);
 
+
+
+
+
+
+
+
+
+
+  //buffer= Vo *5; //5volts
+  //VoutA = (buffer)/1024.0;
+  //buffer = (5/VoutA)-1;
+  //R2a = R1a*buffer;
   R2a = R1a * (1023.0 / (float)Vo - 1.0);
   logR2 = log(R2a);
+  
   T = (1.0 / (c1 + c2*logR2 + c3*logR2*logR2*logR2));
   T = T - 273.15;
   T = (T * 9.0)/ 5.0 + 32.0; 
@@ -221,8 +244,9 @@ Vo=analogRead(A3);
   Serial.print("Temperature: "); 
   Serial.print(T);
   Serial.println(" F"); 
-
-Serial.print("Resistance: "); 
+  //Serial.println("VoutA  value: "); 
+  //Serial.println(VoutA);
+  Serial.print("Resistance: "); 
   Serial.print(R2a);
   Serial.println(" Ohms"); 
 
@@ -247,27 +271,27 @@ if (psi1 < 0){
  dtostrf(psi1, 2, 0,psi); 
  dtostrf(T, 3, 0,water); 
  
-      AverageValue2 = 0;
-      for(int i = 0; i < MeasurementsToAverage; ++i)
-      {
-          AverageValue2 += analogRead(A2);
-          delay(1);
-      }
-      AverageValue2 /= MeasurementsToAverage;
-      value = AverageValue2;
+    //  AverageValue2 = 0;
+    //  for(int i = 0; i < MeasurementsToAverage; ++i)
+    //  {
+    //      AverageValue2 += analogRead(A2);
+     //     delay(1);
+     // }
+     // AverageValue2 /= MeasurementsToAverage;
+     // value = AverageValue2;
       
-  //value = analogRead(A2);
+   value = analogRead(A2);
 
       vout = (value * 5.0) / 1024.0;
       vin = vout / (R2 / (R1 + R2));
-    //  Serial.print("Sensor Value: ");
-    //  Serial.println(value);
+      //Serial.print("Sensor Value: ");
+      //Serial.println(value);
 
-     // Serial.print("Vout Value: ");
-     // Serial.println(vout);
+      //Serial.print("Vout Value: ");
+      //Serial.println(vout);
 
-     // Serial.print("Volt Value: ");
-    //  Serial.println(vin);
+      //Serial.print("Volt Value: ");
+      //Serial.println(vin);
       // show needle and dial
      // xx = vin;                                // 135 = zero position, 180 = just before middle, 0 = middle, 45 = max
       w= vin;
