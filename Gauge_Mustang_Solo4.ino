@@ -241,14 +241,14 @@ void loop(void) {
   T = T - 273.15;
   T = (T * 9.0)/ 5.0 + 32.0; 
 
-  Serial.print("Temperature: "); 
-  Serial.print(T);
-  Serial.println(" F"); 
+ // Serial.print("Temperature: "); 
+ // Serial.print(T);
+ // Serial.println(" F"); 
   //Serial.println("VoutA  value: "); 
   //Serial.println(VoutA);
-  Serial.print("Resistance: "); 
-  Serial.print(R2a);
-  Serial.println(" Ohms"); 
+ // Serial.print("Resistance: "); 
+ // Serial.print(R2a);
+ // Serial.println(" Ohms"); 
 
 
       AverageValue = 0;
@@ -261,12 +261,25 @@ void loop(void) {
       AverageValue /= MeasurementsToAverage;
       sensorVal = AverageValue;
 
-psi1 = ((sensorVal-102)*100)/818;
+      // sensorVal = 540;
+        Serial.println("Sensor Value: ");
+       Serial.println(sensorVal);
+
+       float voltage = (sensorVal*5.0)/1024.0;
+      
+      Serial.print("voltage : ");
+      Serial.println(voltage);
+
+ //psi1 = ((sensorVal-102)*100)/818;
+ //psi1 = ((sensorVal-102.4)*100)/921.6;
+  psi1 = ((sensorVal-102.4)*100)/785;
 
 if (psi1 < 0){
         psi1=0;
       }
-
+ 
+      Serial.print("PSI : ");
+      Serial.println(psi1);
 
  dtostrf(psi1, 2, 0,psi); 
  dtostrf(T, 3, 0,water); 
