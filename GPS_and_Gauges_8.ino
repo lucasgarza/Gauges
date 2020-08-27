@@ -507,7 +507,7 @@ void loop()                     // run over and over again
     if (screenRefreshSpinnerPos ==1){
      
       float AverageValue = 0;
-      int MeasurementsToAverage = 16;
+      int MeasurementsToAverage = 32;
       for(int i = 0; i < MeasurementsToAverage; ++i)
       {
           AverageValue += analogRead(A0);
@@ -516,20 +516,24 @@ void loop()                     // run over and over again
       AverageValue /= MeasurementsToAverage;
       sensorVal = AverageValue;
  
-      //  Serial.println("Sensor Value: ");
-      // Serial.println(sensorVal);
+        Serial.println("Sensor Value: ");
+       Serial.println(sensorVal);
 
         
 
-      psi1 = ((sensorVal-102)*100)/818;
+     // psi1 = ((sensorVal-102)*100)/818;
+    //  psi1 = ((sensorVal-102.4)*100)/921.6;
+     psi1 = ((sensorVal-102.4)*100)/785;
 
-     // Serial.print("PSI1 : ");
-    //  Serial.println(psi1);
 
       if (psi1 < 0){
         psi1=0;
       }
       float voltage = (sensorVal*5.0)/1024.0;
+      
+      Serial.print("voltage : ");
+      Serial.println(voltage);
+      
       dtostrf(psi1, 3, 0,psi); 
 
       {
@@ -550,13 +554,13 @@ void loop()                     // run over and over again
     T = T - 273.15;
     T = (T * 9.0)/ 5.0 + 32.0; 
 
-    Serial.print("Temperature: "); 
-    Serial.print(T);
-    Serial.println(" F"); 
+    //Serial.print("Temperature: "); 
+    //Serial.print(T);
+    //Serial.println(" F"); 
 
-    Serial.print("Resistance: "); 
-    Serial.print(R2a);
-    Serial.println(" Ohms"); 
+    //Serial.print("Resistance: "); 
+    //Serial.print(R2a);
+    //Serial.println(" Ohms"); 
 
      dtostrf(T, 3, 0,water);
 
