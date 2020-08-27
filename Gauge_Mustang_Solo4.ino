@@ -39,7 +39,7 @@ float R1 = 100000.0; // resistance of R1 (100K)
 float R2 = 10000.0; // resistance of R2 (10K)
 float AverageValue = 0;
 float AverageValue2 = 0;
-int MeasurementsToAverage = 16;
+int MeasurementsToAverage = 32;
 
 
 //int ThermistorPin = 0;
