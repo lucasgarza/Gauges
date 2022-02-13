@@ -35,11 +35,11 @@ char satsBuf1[3];
 char satsBuf2[3];
 //float speed1;
 int speed_round;
-int speed_test =0;
+int speed_test;
 char* spinner = "/-\\|";
 byte screenRefreshSpinnerPos = 0;
 byte gpsUpdateSpinnerPos = 0;
-String heading ="";
+//String heading ="";
 
 
 // The TinyGPS++ object
@@ -96,7 +96,7 @@ void gaugeSpeed() {
   //u8g.drawStr( 25, 45, "99");
   // u8g.setFont(u8g_font_courB10);
 
-   u8g.drawStr( 0, 20, heading.c_str());
+  // u8g.drawStr( 0, 20, heading.c_str());
   //u8g.undoScale();
   u8g.setFont(u8g_font_fur11);
   // u8g.setFont(u8g_font_unifont);
@@ -159,7 +159,7 @@ void setup(void) {
  
 
     motor1.zero();
-    motor1.setPosition(500);
+    motor1.setPosition(250);
     motor1.updateBlocking();
     motor1.zero();
    //motor1.update();
@@ -199,10 +199,13 @@ void displayInfo()
     //Serial.println(gps.speed.kmph());
    // speed1 = gps.speed.mph();   //Change this to display other speeds( kmph, mph);
     //speed_round = round(speed1);
+    
     speed_round = round(gps.speed.mph());
+    //speed_round = 55;
+    
     //dtostrf(speed_round, 6, 0,speed);
     itoa(speed_round, speed, 10);
-    heading = gps.cardinal(gps.course.value());
+   // heading = gps.cardinal(gps.course.value());
    // Serial.println(gps.cardinal(gps.course.value()));
     //sprintf(heading, "%s",  gps.cardinal(gps.course.value()));
 
@@ -214,6 +217,8 @@ void displayInfo()
   }
   else
   {  
+    //speed_round = 55;
+    //itoa(speed_round, speed, 10);
     // Serial.print(F("INVALID"));
   }
   // Serial.println();
